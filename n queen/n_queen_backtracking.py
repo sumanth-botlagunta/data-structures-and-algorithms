@@ -1,3 +1,5 @@
+from typing import List
+
 def solveNQueens(self, n: int) -> List[List[str]]:
       board = [['.' for _ in range(n)] for _ in range(n)]
       column = set()
