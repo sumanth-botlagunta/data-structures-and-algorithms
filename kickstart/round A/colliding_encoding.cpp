@@ -1,53 +1,50 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include <vector>
-
 using namespace std;
-
-// Function to check if there are any collisions between words
-string checkCollisions(vector<string> words, unordered_map<char, int> mapping)
-{
-  unordered_map<string, int> encodedWords; // map to store encoded words
-  for (string word : words)
-  {
-    string encodedWord = "";
-    for (char c : word)
-    {
-      encodedWord += to_string(mapping[c]); // encode word using mapping
-    }
-    // check if encoded word already exists in map
-    if (encodedWords.find(encodedWord) != encodedWords.end())
-    {
-      return "YES"; // collision found
-    }
-    encodedWords[encodedWord] = 1; // add encoded word to map
-  }
-  return "NO"; // no collisions found
-}
 
 int main()
 {
   int T;
   cin >> T;
-  for (int i = 1; i <= T; i++)
+  for (int t = 1; t <= T; t++)
   {
-    unordered_map<char, int> mapping;
-    string mappingStr;
-    cin >> mappingStr;
-    for (int j = 0; j < 26; j++)
+    // Read the mapping
+    int mapping[26];
+    for (int i = 0; i < 26; i++)
     {
-      mapping[char('A' + j)] = mappingStr[j] - '0'; // build mapping
+      cin >> mapping[i];
     }
+
+    // Read the words and check for collisions
     int N;
     cin >> N;
-    vector<string> words(N);
-    for (int j = 0; j < N; j++)
+    unordered_map<string, bool> seen;
+    bool collision = false;
+    for (int i = 0; i < N; i++)
     {
-      cin >> words[j];
+      string word;
+      cin >> word;
+
+      // Encode the word using the mapping
+      for (char &c : word)
+      {
+        c = mapping[c - 'A'] + '0';
+      }
+
+      // Check if the encoded word has been seen before
+      if (seen[word])
+      {
+        collision = true;
+      }
+      else
+      {
+        seen[word] = true;
+      }
     }
-    string result = checkCollisions(words, mapping); // check for collisions
-    cout << "Case #" << i << ": " << result << endl;
+
+    // Output the result
+    cout << "Case #" << t << ": " << (collision ? "YES" : "NO") << endl;
   }
   return 0;
 }
